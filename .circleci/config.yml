@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.1
+      - image: circleci/python:3.11
     working_directory: ~/repo
     steps:
       - checkout
@@ -12,6 +12,11 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "pollsapi/requirements.txt" }}
             - v1-dependencies-
+
+      - run:
+          name: Upgrade pip
+          command: |
+            python -m pip install --upgrade pip
 
       - run:
           name: install dependencies
@@ -31,6 +36,10 @@ jobs:
             . venv/bin/activate
             cd pollsapi
             python manage.py test
+      - run:
+          name: Create test-reports folder if not exists
+          command: mkdir -p test-reports
+
 
       - store_artifacts:
           path: test-reports
