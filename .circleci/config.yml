@@ -34,7 +34,6 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            cd pollsapi
             python manage.py test
       - run:
           name: Create test-reports folder if not exists
